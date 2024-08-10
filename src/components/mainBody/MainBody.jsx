@@ -1,16 +1,48 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoIosArrowDropright } from "react-icons/io";
+import { getTopMixes, getTracks } from "../../api";
+import { useDispatch } from "react-redux";
+import { setCurrentMusicUrl } from "../../redux/action/playerActions";
 
 const MainBody = () => {
+  const dispatch = useDispatch();
+  const [playlists, setPlaylists] = useState();
+  const fetchPlaylists = async () => {
+    const playlists = await getTopMixes();
+
+    console.log({ playlists });
+    setPlaylists(playlists);
+  };
+
+  const fetchTracks = async (tracksUrl) => {
+    const tracks = await getTracks(tracksUrl);
+
+    console.log({ tracks });
+
+    dispatch(setCurrentMusicUrl(tracks?.items[0].track.preview_url));
+  };
+
+  useEffect(() => {
+    fetchPlaylists();
+
+    getTracks("https://api.spotify.com/v1/tracks/67smGwuPEtA6GAfeweAVNO");
+  }, []);
+
   return (
-    <div className="bg-[#121212] h-screen w-full">
+    <div className="bg-[#121212] w-full">
       <div className="w-full h-[80px] bg-header-gradient flex gap-4 pl-[40px]">
         <button>
-          <IoIosArrowDropleft size={40} color="white" />
+          <IoIosArrowDropleft
+            size={40}
+            color="white"
+          />
         </button>
         <button>
-          <IoIosArrowDropright size={40} color="white" />
+          <IoIosArrowDropright
+            size={40}
+            color="white"
+          />
         </button>
       </div>
       <div className="pl-[40px] pt-[30px] bg-custom-gradient mb-[50px]">
@@ -83,48 +115,36 @@ const MainBody = () => {
       <div>
         <div className="flex justify-between mb-[25px] mx-[40px]">
           <h2 className="text-white text-[30px] font-bold">Your top mixes</h2>
-          <button className="text-[#ADADAD] text-[18px] font-[600] uppercase leading-5">See all</button>
+          <button className="text-[#ADADAD] text-[18px] font-[600] uppercase leading-5">
+            See all
+          </button>
         </div>
         <div className="flex justify-between mx-[40px]">
-          <div className="flex flex-col gap-4 items-center pt-[20px] w-[224px] h-[324px] bg-[#1B1B1B] rounded-[6px]">
-            <div>
-              <img className="rounded-[6px]" width={182} src="https://cdn.dribbble.com/users/3547568/screenshots/14395014/music_jpeg.jpg" alt="#" />
+          {playlists?.items.map(({ id, name, description, images, tracks }) => (
+            <div
+              key={id}
+              className="flex flex-col gap-4 items-center pt-[20px] w-[254px] bg-[#1B1B1B] rounded-[6px]"
+            >
+              <div>
+                <img
+                  className="rounded-[6px] px-5"
+                  src={images[0].url}
+                  alt="#"
+                />
+              </div>
+              <div className="text-white ml-[20px] max-w-[182px]">
+                <button
+                  className="text-[20px] font-bold leading-7 text-left"
+                  onClick={() => fetchTracks(tracks.href)}
+                >
+                  {name}
+                </button>
+                <p className="text-[#B3B3B3] text-[18px] font-[450] leading-6 pt-[8px]">
+                  {description}
+                </p>
+              </div>
             </div>
-            <div className="text-white ml-[20px] max-w-[182px]">
-              <h3 className="text-[20px] font-bold leading-7">Chill Mix</h3>
-              <p className="text-[#B3B3B3] text-[18px] font-[450] leading-6 pt-[8px]">Julia Wolf, Khalid, ayokay and more</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 items-center pt-[20px] w-[224px] h-[324px] bg-[#1B1B1B] rounded-[6px]">
-            <div>
-              <img className="rounded-[6px]" width={182} src="https://cdn.dribbble.com/users/3547568/screenshots/14395014/music_jpeg.jpg" alt="#" />
-            </div>
-            <div className="text-white ml-[20px] max-w-[182px]">
-              <h3 className="text-[20px] font-bold leading-7">Chill Mix</h3>
-              <p className="text-[#B3B3B3] text-[18px] font-[450] leading-6 pt-[8px]">Julia Wolf, Khalid, ayokay and more</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 items-center pt-[20px] w-[224px] h-[324px] bg-[#1B1B1B] rounded-[6px]">
-            <div>
-              <img className="rounded-[6px]" width={182} src="https://cdn.dribbble.com/users/3547568/screenshots/14395014/music_jpeg.jpg" alt="#" />
-            </div>
-            <div className="text-white ml-[20px] max-w-[182px]">
-              <h3 className="text-[20px] font-bold leading-7">Chill Mix</h3>
-              <p className="text-[#B3B3B3] text-[18px] font-[450] leading-6 pt-[8px]">Julia Wolf, Khalid, ayokay and more</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 items-center pt-[20px] w-[224px] h-[324px] bg-[#1B1B1B] rounded-[6px]">
-            <div>
-              <img className="rounded-[6px]" width={182} src="https://cdn.dribbble.com/users/3547568/screenshots/14395014/music_jpeg.jpg" alt="#" />
-            </div>
-            <div className="text-white ml-[20px] max-w-[182px]">
-              <h3 className="text-[20px] font-bold leading-7">Chill Mix</h3>
-              <p className="text-[#B3B3B3] text-[18px] font-[450] leading-6 pt-[8px]">Julia Wolf, Khalid, ayokay and more</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
