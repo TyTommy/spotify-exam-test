@@ -21,10 +21,18 @@ export const getToken = async () => {
   }
 };
 
-export const getTopMixes = async () => {
+export const CATEGORIES = {
+  TOP_MIXES: "toplists/playlists",
+  MADE_FOR_YOU: "0JQ5DAqbMKFHOzuVTgTizF/playlists",
+  RECENT_PLAYED: "0JQ5DAqbMKFQ00XGBls6ym/playlists",
+  JUMP_BACK_IN: "0JQ5DAqbMKFLVaM30PMBm4/playlists",
+  UNIQUELY_YOURS: "0JQ5DAqbMKFCbimwdOYlsl/playlists",
+};
+
+export const fetchCategory = async (playlistUri, offset = 0, limit = 4) => {
   try {
     const response = await fetch(
-      "https://api.spotify.com/v1/browse/categories/toplists/playlists?offset=0&limit=4",
+      `https://api.spotify.com/v1/browse/categories/${playlistUri}?offset=${offset}&limit=${limit}`,
       {
         headers: {
           Authorization: `${localStorage.getItem(
@@ -34,16 +42,15 @@ export const getTopMixes = async () => {
       }
     );
 
-    const { playlists } = await response.json();
-    return playlists;
+    return await response.json();
   } catch (err) {
     console.log(err);
   }
 };
 
-export const getTracks = async (url) => {
+export const fetchPlaylist = async (id) => {
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${id}`, {
       headers: {
         Authorization: `${localStorage.getItem(
           "token_type"

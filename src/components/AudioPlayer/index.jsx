@@ -25,6 +25,8 @@ const AudioPlayer = ({ src, title, artist, className }) => {
     if (src) {
       setCurrentTime(0);
       audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      setIsPlaying(true);
     }
   }, [src]);
 
@@ -92,12 +94,12 @@ const AudioPlayer = ({ src, title, artist, className }) => {
           <span className="text-white text-xs">{formatTime(currentTime)}</span>
           <input
             type="range"
-            value={(currentTime / duration) * 100}
+            value={(currentTime / duration) * 100 || 0}
             onChange={handleSeek}
             className="w-full h-1 bg-gray-600 rounded-full appearance-none"
             style={{
               background: `linear-gradient(to right, white ${
-                (currentTime / duration) * 100
+                (currentTime / duration) * 100 || 0
               }%, #4a5568 0%)`,
             }}
           />

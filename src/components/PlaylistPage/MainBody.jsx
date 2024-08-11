@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { IoIosArrowDropright } from "react-icons/io";
-import { fetchCategory, CATEGORIES } from "../../api";
-import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../LoadingSpinner";
+import { fetchCategory, fetchCategory, CATEGORIES } from "../../api";
+import { useDispatch } from "react-redux";
+import { setCurrentMusicUrl } from "../../redux/action/playerActions";
 
 const MainBody = () => {
-  const navigate = useNavigate();
-  const [allCategories, setAllCategories] = useState();
+  const dispatch = useDispatch();
+  const [allCategories, setAllCategories] = useState([]);
   const queryPlaylists = async () => {
     const playlists = await Promise.all([
       fetchCategory(CATEGORIES.TOP_MIXES),
@@ -17,14 +17,28 @@ const MainBody = () => {
       fetchCategory(CATEGORIES.UNIQUELY_YOURS),
     ]);
 
+    console.log({ playlists });
     setAllCategories(playlists);
+  };
+
+  const fetchTracks = async (tracksUrl) => {
+    const tracks = await fetchCategory(tracksUrl);
+
+    console.log({ tracks });
+
+    dispatch(
+      setCurrentMusicUrl(
+        tracks?.items.find((item) => !!item.track.preview_url)?.track
+          .preview_url
+      )
+    );
   };
 
   useEffect(() => {
     queryPlaylists();
-  }, []);
 
-  if (!allCategories) return <LoadingSpinner />;
+    fetchCategory("https://api.spotify.com/v1/tracks/67smGwuPEtA6GAfeweAVNO");
+  }, []);
 
   return (
     <div className="bg-[#121212] w-full pb-40">
@@ -109,22 +123,20 @@ const MainBody = () => {
           </div>
         </div>
       </div>
-      {allCategories.map((category, index) => (
+      {allCategories.map(({ message, playlists }, index) => (
         <div
           key={index}
           className="mt-[30px]"
         >
           <div className="flex justify-between mb-[25px] mx-[40px]">
-            <h2 className="text-white text-[30px] font-bold">
-              {category?.message}
-            </h2>
+            <h2 className="text-white text-[30px] font-bold">{message}</h2>
             <button className="text-[#ADADAD] text-[18px] font-[600] uppercase leading-5">
               See all
             </button>
           </div>
           <div className="flex justify-between mx-[40px]">
-            {category?.playlists?.items.map(
-              ({ id, name, description, images }) => (
+            {playlists?.items.map(
+              ({ id, name, description, images, tracks }) => (
                 <div
                   key={id}
                   className="flex flex-col gap-4 items-center pt-[20px] w-[254px] bg-[#1B1B1B] rounded-[6px]"
@@ -139,7 +151,7 @@ const MainBody = () => {
                   <div className="text-white ml-[20px] max-w-[182px]">
                     <button
                       className="text-[20px] font-bold leading-7 text-left"
-                      onClick={() => navigate(`/playlist/${id}`)}
+                      onClick={() => fetchTracks(tracks.href)}
                     >
                       {name}
                     </button>

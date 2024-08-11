@@ -4,6 +4,7 @@ import { CiSearch } from "react-icons/ci";
 import { BiLibrary } from "react-icons/bi";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -11,89 +12,89 @@ const Sidebar = () => {
       <div>
         <ul className="flex flex-col pl-[30px] pt-[70px]">
           <li className="text-white">
-            <a
+            <Link
               className=" flex items-center gap-[20px]"
-              href="/"
+              to="/"
             >
               <IoHomeOutline size={32} />
               Home
-            </a>
+            </Link>
           </li>
           <li className="text-white pt-[20px]">
-            <a
+            <Link
               className="flex items-center gap-[20px]"
-              href="#"
+              to="#"
             >
               <CiSearch size={32} />
               Search
-            </a>
+            </Link>
           </li>
           <li className="text-white pt-[20px]">
-            <a
+            <Link
               className="flex items-center gap-[20px]"
-              href="#"
+              to="#"
             >
               <BiLibrary size={32} />
               Library
-            </a>
+            </Link>
           </li>
           <li className="text-white pt-[50px]">
-            <a
+            <Link
               className="flex items-center gap-[20px]"
-              href="#"
+              to="#"
             >
               <MdOutlineLibraryAdd size={32} />
               Create Playlist
-            </a>
+            </Link>
           </li>
           <li className="text-white pt-[20px]">
-            <a
+            <Link
               className="flex items-center gap-[20px]"
-              href="#"
+              to="#"
             >
               <FaRegHeart size={32} />
               Liked Song
-            </a>
+            </Link>
           </li>
         </ul>
         <div className="w-[250px] h-[1px] bg-gray-600 mr-[30px] ml-[30px] mt-[20px]"></div>
       </div>
       <ul className="flex flex-col pl-[30px] pt-[20px] text-[#B3B3B3] text-lg">
         <li>
-          <a href="#">Chill Mix</a>
+          <Link to="#">Chill Mix</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Insta Hits</a>
+          <Link to="#">Insta Hits</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Your Top Songs 2021</a>
+          <Link to="#">Your Top Songs 2021</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Mellow Songs</a>
+          <Link to="#">Mellow Songs</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Anime Lofi & Chillhop Music</a>
+          <Link to="#">Anime Lofi & Chillhop Music</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">BG Afro “Select” Vibes</a>
+          <Link to="#">BG Afro “Select” Vibes</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Happy Hits!</a>
+          <Link to="#">Happy Hits!</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Deep Focus</a>
+          <Link to="#">Deep Focus</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Instrumental Study</a>
+          <Link to="#">Instrumental Study</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">OST Compilations</a>
+          <Link to="#">OST Compilations</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Nostalgia for old souled mill...</a>
+          <Link to="#">Nostalgia for old souled mill...</Link>
         </li>
         <li className="mt-[18px]">
-          <a href="#">Mixed Feelings</a>
+          <Link to="#">Mixed Feelings</Link>
         </li>
       </ul>
     </div>
